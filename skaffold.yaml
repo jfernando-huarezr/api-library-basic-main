@@ -1,0 +1,27 @@
+apiVersion: skaffold/v2beta29
+kind: Config
+deploy: 
+  kubectl:
+    manifests:
+      - ./cloud/k8s/*
+      - ./cloud/k8s-dev/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: josehr/library
+      context: library
+      docker: 
+        dockerfile: Dockerfile
+      sync: 
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: josehr/client
+      context: client
+      docker: 
+        dockerfile: Dockerfile
+      sync: 
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
